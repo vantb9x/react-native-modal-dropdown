@@ -13,7 +13,7 @@ import {
   Dimensions,
   View,
   Text,
-  ListView,
+  FlatList,
   TouchableWithoutFeedback,
   TouchableNativeFeedback,
   TouchableOpacity,
@@ -283,14 +283,16 @@ export default class ModalDropdown extends Component {
   _renderDropdown() {
     const {scrollEnabled, renderSeparator, showsVerticalScrollIndicator, keyboardShouldPersistTaps} = this.props;
     return (
-      <ListView scrollEnabled={scrollEnabled}
+      <FlatList scrollEnabled={scrollEnabled}
                 style={styles.list}
-                dataSource={this._dataSource}
-                renderRow={this._renderRow}
-                renderSeparator={renderSeparator || this._renderSeparator}
+                data={this._dataSource}
+                renderItem={this._renderRow}
+                ItemSeparatorComponent={renderSeparator || this._renderSeparator}
                 automaticallyAdjustContentInsets={false}
                 showsVerticalScrollIndicator={showsVerticalScrollIndicator}
                 keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+                ListEmptyComponent = {false}
+                keyExtractor={(item, index) => index.toString()}
       />
     );
   }
@@ -303,7 +305,8 @@ export default class ModalDropdown extends Component {
     return ds.cloneWithRows(options);
   }
 
-  _renderRow = (rowData, sectionID, rowID, highlightRow) => {
+  _renderRow = (rowItem, sectionID, rowID, highlightRow) => {
+    let rowData = rowItem;
     const {renderRow, dropdownTextStyle, dropdownTextHighlightStyle, accessible} = this.props;
     const {selectedIndex} = this.state;
     const key = `row_${rowID}`;
