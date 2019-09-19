@@ -299,10 +299,7 @@ export default class ModalDropdown extends Component {
 
   get _dataSource() {
     const {options} = this.props;
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
-    });
-    return ds.cloneWithRows(options);
+    return options;
   }
 
   _renderRow = (rowItem, sectionID, rowID, highlightRow) => {
